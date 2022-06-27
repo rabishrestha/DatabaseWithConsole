@@ -10,16 +10,43 @@ namespace MySQLConnectionExample
 
         static void Main(string[] args)
         {
-            var sql = "SELECT * FROM address_book";
-            ReadFromDatabase(sql);
-
-            var sql2 = "INSERT INTO address_book (id, full_name, contact_no, email) " +
-                "VALUES (null, 'Rohan Shrestha', '123456', 'mail@email.com')";
-            WriteToDatabase(sql2);
-
-            //ReadFromDatabase(sql);
+            DisplayOptions();
         }
 
+        public static void DisplayOptions()
+        {
+            Console.WriteLine("\n\nEnter your option\n 1 : Add Data\n " +
+                "2 : List Data\n 0 : Quit");
+            int c = 2;
+            try
+            {
+                c = Convert.ToInt32(Console.ReadLine());
+                switch (c)
+                {
+                    case 1:
+                        Console.Write("Enter full name (string) :\t");
+                        string full_name = Console.ReadLine();
+                        Console.Write("Enter Contact No (string) :\t");
+                        string contact = Console.ReadLine();
+                        Console.Write("Enter Email (string) :\t");
+                        string email = Console.ReadLine();
+                        var sql2 = "INSERT INTO address_book (id, full_name, contact_no, email) " +
+                        $"VALUES (null, '{full_name}', '{contact}', '{email}')";
+                        WriteToDatabase(sql2);
+                        break;
+                    case 2:
+                        var sql = "SELECT * FROM address_book";
+                        ReadFromDatabase(sql);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            catch
+            {
+                Console.WriteLine("Please enter numbers between 1 to 3 only");
+            }
+        }
         public static void ReadFromDatabase(string sql)
         {
             MySqlConnection conn = new MySqlConnection(connStr);
@@ -43,8 +70,8 @@ namespace MySQLConnectionExample
             }
 
             conn.Close();
-            Console.WriteLine("Connection Closed. Press any key to exit...");
-            Console.ReadKey();
+            //Console.WriteLine("Connection Closed. Press any key to exit...");
+            DisplayOptions();
         }
 
         public static void WriteToDatabase(string sql)
@@ -65,8 +92,8 @@ namespace MySQLConnectionExample
             }
 
             conn.Close();
-            Console.WriteLine("Connection Closed. Press any key to exit...");
-            Console.ReadKey();
+            //Console.WriteLine("Connection Closed. Press any key to exit...");
+            DisplayOptions();
         }
     }
 
